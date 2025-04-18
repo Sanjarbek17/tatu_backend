@@ -91,8 +91,15 @@ class CustomLoginView(View):
             user = authenticate(username=username, password=password)
             if user is not None:
                 token, created = Token.objects.get_or_create(user=user)
-                is_professor = hasattr(user, 'professorprofile')
-                return JsonResponse({'token': token.key, 'is_professor': is_professor}, status=200)
+                user_data = {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "is_professor": hasattr(user, 'professorprofile'),
+                    "is_student": hasattr(user, 'studentprofile'),
+                    "token": token.key
+                }
+                return JsonResponse(user_data, status=200)
             else:
                 return JsonResponse({'error': 'Invalid credentials'}, status=400)
         except json.JSONDecodeError:

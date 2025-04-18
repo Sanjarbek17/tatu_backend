@@ -3,7 +3,6 @@ from rest_framework.authtoken.views import obtain_auth_token
 from .views import RegisterView, ArticleListView, ArticleDetailView, SchoolYearListView, ProfessorArticlesView, CustomLoginView
 
 urlpatterns = [
-    path('api/', include('rest_framework.urls')),
     path('api/token-auth/', obtain_auth_token, name='api_token_auth'),
     path('api/register/', RegisterView.as_view(), name='register'),
     path('api/articles/', ArticleListView.as_view(), name='article-list'),
