@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import RegisterView, ArticleListView, ArticleDetailView, SchoolYearListView, ProfessorArticlesView, CustomLoginView
+from .views import RegisterView, ArticleListView, ArticleDetailView, SchoolYearListView, ProfessorArticlesView, CustomLoginView, ArticleUploadView
 
 urlpatterns = [
     path('api/token-auth/', obtain_auth_token, name='api_token_auth'),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('api/school-years/', SchoolYearListView.as_view(), name='school-year-list'),
     path('api/professors/<str:username>/articles/', ProfessorArticlesView.as_view(), name='professor-articles-by-username'),
     path('api/custom-login/', CustomLoginView.as_view(), name='custom-login'),
+    path('api/articles/upload/', ArticleUploadView.as_view(), name='article-upload'),
 ]

@@ -30,7 +30,7 @@ class RegisterView(APIView):
         if data.get('is_professor', False):
             ProfessorProfile.objects.create(user=user)
         elif data.get('is_student', False):
-            StudentProfile.objects.create(user=user.pk)
+            StudentProfile.objects.create(user=user)
 
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
 
@@ -70,6 +70,23 @@ class ProfessorArticlesView(APIView):
             return Response(serializer.data)
         except ProfessorProfile.DoesNotExist:
             return Response({"error": "Professor not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class ArticleUploadView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def post(self, request):
+        try:
+            professor = ProfessorProfile.objects.get(user=request.user)
+            data = request.data
+            data['professor'] = professor.id
+            serializer = ArticleSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ProfessorProfile.DoesNotExist:
+            return Response({"error": "Only professors can upload articles."}, status=status.HTTP_403_FORBIDDEN)
 
 class CustomLoginView(View):
     @method_decorator(csrf_exempt)

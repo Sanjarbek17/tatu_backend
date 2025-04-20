@@ -134,7 +134,7 @@ AUTH_USER_MODEL = 'core.User'
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Added localhost to CSRF_TRUSTED_ORIGINS to resolve the origin checking error
-CSRF_TRUSTED_ORIGINS = ['http://localhost:53549']
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:53549']
 
 # Updated REST framework settings to use TokenAuthentication
 REST_FRAMEWORK = {
