@@ -131,3 +131,8 @@ class CustomLoginView(View):
         except Exception as e:
             print(e)
             return JsonResponse({'error': str(e)}, status=500)
+
+class CheckUsernameView(View):
+    def get(self, request, username, *args, **kwargs):
+        exists = User.objects.filter(username=username).exists()
+        return JsonResponse({"username_exists": exists})

@@ -1,8 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import RegisterView, ArticleListView, ArticleDetailView, SchoolYearListView, ProfessorArticlesView, CustomLoginView, ArticleUploadView
+from .views import CheckUsernameView, RegisterView, ArticleListView, ArticleDetailView, SchoolYearListView, ProfessorArticlesView, CustomLoginView, ArticleUploadView
 
 urlpatterns = [
     path('api/token-auth/', obtain_auth_token, name='api_token_auth'),
@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/professors/<str:username>/articles/', ProfessorArticlesView.as_view(), name='professor-articles-by-username'),
     path('api/custom-login/', CustomLoginView.as_view(), name='custom-login'),
     path('api/articles/upload/', ArticleUploadView.as_view(), name='article-upload'),
+    path('api/check-username/<str:username>/', CheckUsernameView.as_view(), name='check-username'),
 ]
 
 # Serve static files during development
