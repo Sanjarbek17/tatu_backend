@@ -7,8 +7,13 @@ class SchoolYearSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'start_date', 'end_date']
         
 class ArticleSerializer(serializers.ModelSerializer):
-    school_year = SchoolYearSerializer()
+    school_year = SchoolYearSerializer(read_only=True)
 
+    class Meta:
+        model = Article
+        fields = ['id', 'title', 'description', 'file', 'created_at', 'professor', 'school_year']
+
+class ArticleWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['id', 'title', 'description', 'file', 'created_at', 'professor', 'school_year']

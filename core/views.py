@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from .models import Article, SchoolYear, ProfessorProfile, StudentProfile
-from .serializers import ArticleSerializer, SchoolYearSerializer
+from .serializers import ArticleSerializer, SchoolYearSerializer, ArticleWriteSerializer
 from django.contrib.auth import authenticate
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -82,7 +82,7 @@ class ArticleUploadView(APIView):
             professor = ProfessorProfile.objects.get(user=request.user)
             data = request.data
             data['professor'] = professor.id
-            serializer = ArticleSerializer(data=data)
+            serializer = ArticleWriteSerializer(data=data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
