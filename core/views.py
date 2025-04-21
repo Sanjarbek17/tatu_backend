@@ -28,8 +28,10 @@ class RegisterView(APIView):
         )
 
         if data.get('is_professor', False):
+            print('is prof', data.get('is_professor', False))
             ProfessorProfile.objects.create(user=user)
         elif data.get('is_student', False):
+            print('is stu', data.get('is_student', False))
             StudentProfile.objects.create(user=user)
 
         return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
@@ -104,10 +106,15 @@ class CustomLoginView(View):
 
             if not username or not password:
                 return JsonResponse({'error': 'Username and password are required'}, status=400)
-
+            print('before authenticate')
             user = authenticate(username=username, password=password)
+            print('after authenticate', user)
             if user is not None:
+                print('before token creation', user.id)
+                if not user.id:
+                    return JsonResponse({'error': 'User does not exist in the database'}, status=400)
                 token, created = Token.objects.get_or_create(user=user)
+                print('token:', token)
                 user_data = {
                     "id": user.id,
                     "username": user.username,
@@ -122,4 +129,5 @@ class CustomLoginView(View):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
         except Exception as e:
+            print(e)
             return JsonResponse({'error': str(e)}, status=500)
